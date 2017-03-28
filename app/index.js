@@ -1,12 +1,23 @@
-import _ from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-function component () {
-  var element = document.createElement('div');
 
-  /* lodash is required for the next line to work */
-  element.innerHTML = _.join(['Hello','webpack'], ' ');
 
-  return element;
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
 }
 
-document.body.appendChild(component());
+function App() {
+  return (
+    <div>
+      <Welcome name="Sara" />
+      <Welcome name="Cahal" />
+      <Welcome name="Edite" />
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
