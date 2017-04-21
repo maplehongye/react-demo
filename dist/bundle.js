@@ -9458,6 +9458,8 @@ module.exports = __webpack_require__(19);
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(80);
 
 var _react2 = _interopRequireDefault(_react);
@@ -9468,6 +9470,15 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// hello
 function Welcome(props) {
   return _react2.default.createElement(
     'h1',
@@ -9476,7 +9487,6 @@ function Welcome(props) {
     props.name
   );
 }
-
 function App() {
   return _react2.default.createElement(
     'div',
@@ -9487,7 +9497,283 @@ function App() {
   );
 }
 
-_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
+// list
+var numbers = [1, 2, 3, 4, 5];
+var listItems = numbers.map(function (number) {
+  return _react2.default.createElement(
+    'li',
+    { key: number.toString() },
+    number * 2
+  );
+});
+
+// form input
+
+var NameForm = function (_React$Component) {
+  _inherits(NameForm, _React$Component);
+
+  function NameForm(props) {
+    _classCallCheck(this, NameForm);
+
+    var _this = _possibleConstructorReturn(this, (NameForm.__proto__ || Object.getPrototypeOf(NameForm)).call(this, props));
+
+    _this.state = { value: 'A' };
+
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
+    return _this;
+  }
+
+  _createClass(NameForm, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      document.getElementById('inputValue1').innerHTML = this.state.value;
+      document.getElementById('inputValue2').innerHTML = this.state.value;
+      document.getElementById('inputValue3').innerHTML = this.state.value;
+    }
+  }, {
+    key: 'handleChange',
+    value: function handleChange(event) {
+      this.setState({ value: event.target.value.toUpperCase() });
+      document.getElementById('inputValue1').innerHTML = this.state.value;
+      document.getElementById('inputValue2').innerHTML = event.target.value.toUpperCase();
+    }
+  }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(event) {
+      alert('A name was submitted: ' + this.state.value);
+      event.preventDefault();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      document.getElementById('inputValue3').innerHTML = this.state.value;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'form',
+        { onSubmit: this.handleSubmit },
+        _react2.default.createElement(
+          'label',
+          null,
+          'Name:',
+          _react2.default.createElement('input', { type: 'text', value: this.state.value, onChange: this.handleChange })
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          'handleChange\u4E8B\u4EF6\u91CC\u83B7\u53D6input\u503C(\u901A\u8FC7this.state.value)\uFF1A',
+          _react2.default.createElement('span', { id: 'inputValue1' })
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          'handleChange\u4E8B\u4EF6\u91CC\u83B7\u53D6input\u503C(\u901A\u8FC7event.target.value)\uFF1A',
+          _react2.default.createElement('span', { id: 'inputValue2' })
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          'componentDidUpdate\u51FD\u6570\u91CC\u83B7\u53D6input\u503C(\u901A\u8FC7this.state.value)\uFF1A',
+          _react2.default.createElement('span', { id: 'inputValue3' })
+        ),
+        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+      );
+    }
+  }]);
+
+  return NameForm;
+}(_react2.default.Component);
+
+// form textarea
+
+
+var EssayForm = function (_React$Component2) {
+  _inherits(EssayForm, _React$Component2);
+
+  function EssayForm(props) {
+    _classCallCheck(this, EssayForm);
+
+    var _this2 = _possibleConstructorReturn(this, (EssayForm.__proto__ || Object.getPrototypeOf(EssayForm)).call(this, props));
+
+    _this2.state = {
+      value: 'Please write an essay about your favorite DOM element.'
+    };
+
+    _this2.handleChange = _this2.handleChange.bind(_this2);
+    _this2.handleSubmit = _this2.handleSubmit.bind(_this2);
+    return _this2;
+  }
+
+  _createClass(EssayForm, [{
+    key: 'handleChange',
+    value: function handleChange(event) {
+      this.setState({ value: event.target.value });
+    }
+  }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(event) {
+      alert('An essay was submitted: ' + this.state.value);
+      event.preventDefault();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'form',
+        { onSubmit: this.handleSubmit },
+        _react2.default.createElement(
+          'label',
+          null,
+          'Name:',
+          _react2.default.createElement('textarea', { value: this.state.value, onChange: this.handleChange })
+        ),
+        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+      );
+    }
+  }]);
+
+  return EssayForm;
+}(_react2.default.Component);
+
+// form select
+
+
+var FlavorForm = function (_React$Component3) {
+  _inherits(FlavorForm, _React$Component3);
+
+  function FlavorForm(props) {
+    _classCallCheck(this, FlavorForm);
+
+    var _this3 = _possibleConstructorReturn(this, (FlavorForm.__proto__ || Object.getPrototypeOf(FlavorForm)).call(this, props));
+
+    _this3.state = { value: 'coconut' };
+
+    _this3.handleChange = _this3.handleChange.bind(_this3);
+    _this3.handleSubmit = _this3.handleSubmit.bind(_this3);
+    return _this3;
+  }
+
+  _createClass(FlavorForm, [{
+    key: 'handleChange',
+    value: function handleChange(event) {
+      this.setState({ value: event.target.value });
+    }
+  }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(event) {
+      alert('Your favorite flavor is: ' + this.state.value);
+      event.preventDefault();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'form',
+        { onSubmit: this.handleSubmit },
+        _react2.default.createElement(
+          'label',
+          null,
+          'Pick your favorite La Croix flavor:',
+          _react2.default.createElement(
+            'select',
+            { value: this.state.value, onChange: this.handleChange },
+            _react2.default.createElement(
+              'option',
+              { value: 'grapefruit' },
+              'Grapefruit'
+            ),
+            _react2.default.createElement(
+              'option',
+              { value: 'lime' },
+              'Lime'
+            ),
+            _react2.default.createElement(
+              'option',
+              { value: 'coconut' },
+              'Coconut'
+            ),
+            _react2.default.createElement(
+              'option',
+              { value: 'mango' },
+              'Mango'
+            )
+          )
+        ),
+        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+      );
+    }
+  }]);
+
+  return FlavorForm;
+}(_react2.default.Component);
+
+// form 多个表单标签
+
+
+var Reservation = function (_React$Component4) {
+  _inherits(Reservation, _React$Component4);
+
+  function Reservation(props) {
+    _classCallCheck(this, Reservation);
+
+    var _this4 = _possibleConstructorReturn(this, (Reservation.__proto__ || Object.getPrototypeOf(Reservation)).call(this, props));
+
+    _this4.state = {
+      isGoing: true,
+      numberOfGuests: 2
+    };
+
+    _this4.handleInputChange = _this4.handleInputChange.bind(_this4);
+    return _this4;
+  }
+
+  _createClass(Reservation, [{
+    key: 'handleInputChange',
+    value: function handleInputChange(event) {
+      var target = event.target;
+      var value = target.type === 'checkbox' ? target.checked : target.value;
+      var name = target.name;
+
+      this.setState(_defineProperty({}, name, value));
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'form',
+        null,
+        _react2.default.createElement(
+          'label',
+          null,
+          'Is going:',
+          _react2.default.createElement('input', {
+            name: 'isGoing',
+            type: 'checkbox',
+            checked: this.state.isGoing,
+            onChange: this.handleInputChange })
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+          'label',
+          null,
+          'Number of guests:',
+          _react2.default.createElement('input', {
+            name: 'numberOfGuests',
+            type: 'number',
+            value: this.state.numberOfGuests,
+            onChange: this.handleInputChange })
+        )
+      );
+    }
+  }]);
+
+  return Reservation;
+}(_react2.default.Component);
+
+_reactDom2.default.render(_react2.default.createElement(NameForm, null), document.getElementById('root'));
 
 /***/ }),
 /* 82 */
