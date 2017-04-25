@@ -9773,7 +9773,159 @@ var Reservation = function (_React$Component4) {
   return Reservation;
 }(_react2.default.Component);
 
-_reactDom2.default.render(_react2.default.createElement(NameForm, null), document.getElementById('root'));
+// 计算器
+
+
+var Calculate = function (_React$Component5) {
+  _inherits(Calculate, _React$Component5);
+
+  function Calculate(props) {
+    _classCallCheck(this, Calculate);
+
+    var _this5 = _possibleConstructorReturn(this, (Calculate.__proto__ || Object.getPrototypeOf(Calculate)).call(this, props));
+
+    _this5.state = {};
+    return _this5;
+  }
+
+  _createClass(Calculate, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'calculator' },
+        _react2.default.createElement(
+          'div',
+          { className: 'calculator-display' },
+          _react2.default.createElement(
+            'div',
+            { className: 'auto-scaling-text' },
+            '0'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'calculator-keypad' },
+          _react2.default.createElement(
+            'div',
+            { className: 'input-keys' },
+            _react2.default.createElement(
+              'div',
+              { className: 'function-keys' },
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-clear' },
+                'AC'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-sign' },
+                '\xB1'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-percent' },
+                '%'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'digit-keys' },
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-0' },
+                '0'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-dot' },
+                '\u25CF'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-1' },
+                '1'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-2' },
+                '2'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-3' },
+                '3'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-4' },
+                '4'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-5' },
+                '5'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-6' },
+                '6'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-7' },
+                '7'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-8' },
+                '8'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'calculator-key key-9' },
+                '9'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'operator-keys' },
+            _react2.default.createElement(
+              'button',
+              { className: 'calculator-key key-divide' },
+              '\xF7'
+            ),
+            _react2.default.createElement(
+              'button',
+              { className: 'calculator-key key-multiply' },
+              '\xD7'
+            ),
+            _react2.default.createElement(
+              'button',
+              { className: 'calculator-key key-subtract' },
+              '\u2212'
+            ),
+            _react2.default.createElement(
+              'button',
+              { className: 'calculator-key key-add' },
+              '+'
+            ),
+            _react2.default.createElement(
+              'button',
+              { className: 'calculator-key key-equals' },
+              '='
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return Calculate;
+}(_react2.default.Component);
+
+_reactDom2.default.render(_react2.default.createElement(Calculate, null), document.getElementById('root'));
 
 /***/ }),
 /* 82 */
