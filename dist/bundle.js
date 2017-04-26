@@ -9470,327 +9470,227 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// hello
-function Welcome(props) {
-  return _react2.default.createElement(
-    'h1',
-    null,
-    'Hello, ',
-    props.name
-  );
-}
-function App() {
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(Welcome, { name: 'Sara' }),
-    _react2.default.createElement(Welcome, { name: 'Cahal' }),
-    _react2.default.createElement(Welcome, { name: 'Edite' })
-  );
-}
-
 // list
-var numbers = [1, 2, 3, 4, 5];
-var listItems = numbers.map(function (number) {
+var functionKeys = ['AC', '±', '%'];
+var digitKeys = ['0', '●', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+var operatorKeys = ['÷', 'x', '-', '+', '='];
+
+var functionItems = functionKeys.map(function (currKey) {
   return _react2.default.createElement(
-    'li',
-    { key: number.toString() },
-    number * 2
+    'button',
+    { key: currKey, className: 'calculator-key' },
+    currKey
+  );
+});
+var digitItems = digitKeys.map(function (currKey) {
+  return _react2.default.createElement(
+    'button',
+    { key: currKey, className: 'calculator-key' },
+    currKey
+  );
+});
+var operatorItems = operatorKeys.map(function (currKey) {
+  return _react2.default.createElement(
+    'button',
+    { key: currKey, className: 'calculator-key' },
+    currKey
   );
 });
 
-// form input
-
-var NameForm = function (_React$Component) {
-  _inherits(NameForm, _React$Component);
-
-  function NameForm(props) {
-    _classCallCheck(this, NameForm);
-
-    var _this = _possibleConstructorReturn(this, (NameForm.__proto__ || Object.getPrototypeOf(NameForm)).call(this, props));
-
-    _this.state = { value: 'A' };
-
-    _this.handleChange = _this.handleChange.bind(_this);
-    _this.handleSubmit = _this.handleSubmit.bind(_this);
-    return _this;
-  }
-
-  _createClass(NameForm, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      document.getElementById('inputValue1').innerHTML = this.state.value;
-      document.getElementById('inputValue2').innerHTML = this.state.value;
-      document.getElementById('inputValue3').innerHTML = this.state.value;
-    }
-  }, {
-    key: 'handleChange',
-    value: function handleChange(event) {
-      this.setState({ value: event.target.value.toUpperCase() });
-      document.getElementById('inputValue1').innerHTML = this.state.value;
-      document.getElementById('inputValue2').innerHTML = event.target.value.toUpperCase();
-    }
-  }, {
-    key: 'handleSubmit',
-    value: function handleSubmit(event) {
-      alert('A name was submitted: ' + this.state.value);
-      event.preventDefault();
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate() {
-      document.getElementById('inputValue3').innerHTML = this.state.value;
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'form',
-        { onSubmit: this.handleSubmit },
-        _react2.default.createElement(
-          'label',
-          null,
-          'Name:',
-          _react2.default.createElement('input', { type: 'text', value: this.state.value, onChange: this.handleChange })
-        ),
-        _react2.default.createElement(
-          'div',
-          null,
-          'handleChange\u4E8B\u4EF6\u91CC\u83B7\u53D6input\u503C(\u901A\u8FC7this.state.value)\uFF1A',
-          _react2.default.createElement('span', { id: 'inputValue1' })
-        ),
-        _react2.default.createElement(
-          'div',
-          null,
-          'handleChange\u4E8B\u4EF6\u91CC\u83B7\u53D6input\u503C(\u901A\u8FC7event.target.value)\uFF1A',
-          _react2.default.createElement('span', { id: 'inputValue2' })
-        ),
-        _react2.default.createElement(
-          'div',
-          null,
-          'componentDidUpdate\u51FD\u6570\u91CC\u83B7\u53D6input\u503C(\u901A\u8FC7this.state.value)\uFF1A',
-          _react2.default.createElement('span', { id: 'inputValue3' })
-        ),
-        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
-      );
-    }
-  }]);
-
-  return NameForm;
-}(_react2.default.Component);
-
-// form textarea
-
-
-var EssayForm = function (_React$Component2) {
-  _inherits(EssayForm, _React$Component2);
-
-  function EssayForm(props) {
-    _classCallCheck(this, EssayForm);
-
-    var _this2 = _possibleConstructorReturn(this, (EssayForm.__proto__ || Object.getPrototypeOf(EssayForm)).call(this, props));
-
-    _this2.state = {
-      value: 'Please write an essay about your favorite DOM element.'
-    };
-
-    _this2.handleChange = _this2.handleChange.bind(_this2);
-    _this2.handleSubmit = _this2.handleSubmit.bind(_this2);
-    return _this2;
-  }
-
-  _createClass(EssayForm, [{
-    key: 'handleChange',
-    value: function handleChange(event) {
-      this.setState({ value: event.target.value });
-    }
-  }, {
-    key: 'handleSubmit',
-    value: function handleSubmit(event) {
-      alert('An essay was submitted: ' + this.state.value);
-      event.preventDefault();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'form',
-        { onSubmit: this.handleSubmit },
-        _react2.default.createElement(
-          'label',
-          null,
-          'Name:',
-          _react2.default.createElement('textarea', { value: this.state.value, onChange: this.handleChange })
-        ),
-        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
-      );
-    }
-  }]);
-
-  return EssayForm;
-}(_react2.default.Component);
-
-// form select
-
-
-var FlavorForm = function (_React$Component3) {
-  _inherits(FlavorForm, _React$Component3);
-
-  function FlavorForm(props) {
-    _classCallCheck(this, FlavorForm);
-
-    var _this3 = _possibleConstructorReturn(this, (FlavorForm.__proto__ || Object.getPrototypeOf(FlavorForm)).call(this, props));
-
-    _this3.state = { value: 'coconut' };
-
-    _this3.handleChange = _this3.handleChange.bind(_this3);
-    _this3.handleSubmit = _this3.handleSubmit.bind(_this3);
-    return _this3;
-  }
-
-  _createClass(FlavorForm, [{
-    key: 'handleChange',
-    value: function handleChange(event) {
-      this.setState({ value: event.target.value });
-    }
-  }, {
-    key: 'handleSubmit',
-    value: function handleSubmit(event) {
-      alert('Your favorite flavor is: ' + this.state.value);
-      event.preventDefault();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'form',
-        { onSubmit: this.handleSubmit },
-        _react2.default.createElement(
-          'label',
-          null,
-          'Pick your favorite La Croix flavor:',
-          _react2.default.createElement(
-            'select',
-            { value: this.state.value, onChange: this.handleChange },
-            _react2.default.createElement(
-              'option',
-              { value: 'grapefruit' },
-              'Grapefruit'
-            ),
-            _react2.default.createElement(
-              'option',
-              { value: 'lime' },
-              'Lime'
-            ),
-            _react2.default.createElement(
-              'option',
-              { value: 'coconut' },
-              'Coconut'
-            ),
-            _react2.default.createElement(
-              'option',
-              { value: 'mango' },
-              'Mango'
-            )
-          )
-        ),
-        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
-      );
-    }
-  }]);
-
-  return FlavorForm;
-}(_react2.default.Component);
-
-// form 多个表单标签
-
-
-var Reservation = function (_React$Component4) {
-  _inherits(Reservation, _React$Component4);
-
-  function Reservation(props) {
-    _classCallCheck(this, Reservation);
-
-    var _this4 = _possibleConstructorReturn(this, (Reservation.__proto__ || Object.getPrototypeOf(Reservation)).call(this, props));
-
-    _this4.state = {
-      isGoing: true,
-      numberOfGuests: 2
-    };
-
-    _this4.handleInputChange = _this4.handleInputChange.bind(_this4);
-    return _this4;
-  }
-
-  _createClass(Reservation, [{
-    key: 'handleInputChange',
-    value: function handleInputChange(event) {
-      var target = event.target;
-      var value = target.type === 'checkbox' ? target.checked : target.value;
-      var name = target.name;
-
-      this.setState(_defineProperty({}, name, value));
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'form',
-        null,
-        _react2.default.createElement(
-          'label',
-          null,
-          'Is going:',
-          _react2.default.createElement('input', {
-            name: 'isGoing',
-            type: 'checkbox',
-            checked: this.state.isGoing,
-            onChange: this.handleInputChange })
-        ),
-        _react2.default.createElement('br', null),
-        _react2.default.createElement(
-          'label',
-          null,
-          'Number of guests:',
-          _react2.default.createElement('input', {
-            name: 'numberOfGuests',
-            type: 'number',
-            value: this.state.numberOfGuests,
-            onChange: this.handleInputChange })
-        )
-      );
-    }
-  }]);
-
-  return Reservation;
-}(_react2.default.Component);
-
 // 计算器
 
-
-var Calculate = function (_React$Component5) {
-  _inherits(Calculate, _React$Component5);
+var Calculate = function (_React$Component) {
+  _inherits(Calculate, _React$Component);
 
   function Calculate(props) {
     _classCallCheck(this, Calculate);
 
-    var _this5 = _possibleConstructorReturn(this, (Calculate.__proto__ || Object.getPrototypeOf(Calculate)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Calculate.__proto__ || Object.getPrototypeOf(Calculate)).call(this, props));
 
-    _this5.state = {};
-    return _this5;
+    _this.state = {
+      ruler: '',
+      value: 0,
+      displayValue: 0,
+      operator: null,
+      waitForOperand: false
+    };
+
+    _this.inputDigit = _this.inputDigit.bind(_this);
+    return _this;
   }
 
+  // 输入数字
+
+
   _createClass(Calculate, [{
+    key: 'inputDigit',
+    value: function inputDigit(number) {
+      if (this.state.waitForOperand) {
+        if (number == '.') {
+          this.setState({
+            displayValue: '0.',
+            waitForOperand: false
+          });
+        } else {
+          this.setState({
+            displayValue: number,
+            waitForOperand: false
+          });
+        }
+      } else {
+        if (this.state.displayValue === 0 && number != '.') {
+          this.setState({
+            displayValue: number
+          });
+        } else {
+          if (!(/\./.test(this.state.displayValue) && number == ".")) {
+            this.setState({
+              displayValue: this.state.displayValue + number.toString()
+            });
+          }
+        }
+      }
+    }
+
+    // 清零
+
+  }, {
+    key: 'clearAll',
+    value: function clearAll() {
+      this.setState({
+        value: 0,
+        displayValue: 0,
+        operator: null,
+        waitForOperand: false
+      });
+    }
+
+    // 运算
+
+  }, {
+    key: 'runCount',
+    value: function runCount() {
+      var result = void 0;
+      switch (this.state.operator) {
+        case '+':
+          result = this.state.value + parseFloat(this.state.displayValue);
+          break;
+        case '-':
+          result = this.state.value - parseFloat(this.state.displayValue);
+          break;
+        case '*':
+          result = this.state.value * parseFloat(this.state.displayValue);
+          break;
+        case '/':
+          result = this.state.value / parseFloat(this.state.displayValue);
+          break;
+      }
+      return result;
+    }
+  }, {
+    key: 'countAdd',
+    value: function countAdd() {
+      var v = void 0;
+      if (this.state.operator) {
+        v = this.runCount();
+        this.setState({
+          value: v,
+          displayValue: v,
+          operator: '+',
+          waitForOperand: true
+        });
+      } else {
+        this.setState({
+          value: parseFloat(this.state.displayValue),
+          operator: '+',
+          waitForOperand: true
+        });
+      }
+    }
+  }, {
+    key: 'countSubstract',
+    value: function countSubstract() {
+      var v = void 0;
+      if (this.state.operator) {
+        v = this.runCount();
+        this.setState({
+          value: v,
+          displayValue: v,
+          operator: '-',
+          waitForOperand: true
+        });
+      } else {
+        this.setState({
+          value: parseFloat(this.state.displayValue),
+          operator: '-',
+          waitForOperand: true
+        });
+      }
+    }
+  }, {
+    key: 'countMultiply',
+    value: function countMultiply() {
+      var v = void 0;
+      if (this.state.operator) {
+        v = this.runCount();
+        this.setState({
+          value: v,
+          displayValue: v,
+          operator: '*',
+          waitForOperand: true
+        });
+      } else {
+        this.setState({
+          value: parseFloat(this.state.displayValue),
+          operator: '*',
+          waitForOperand: true
+        });
+      }
+    }
+  }, {
+    key: 'countDivide',
+    value: function countDivide() {
+      var v = void 0;
+      if (this.state.operator && !this.state.waitForOperand) {
+        v = this.runCount();
+        this.setState({
+          value: v,
+          displayValue: v,
+          operator: '/',
+          waitForOperand: true
+        });
+      } else {
+        this.setState({
+          value: parseFloat(this.state.displayValue),
+          operator: '/',
+          waitForOperand: true
+        });
+      }
+    }
+  }, {
+    key: 'countEqual',
+    value: function countEqual() {
+      if (this.state.operator) {
+        var v = this.runCount();
+        this.setState({
+          value: v,
+          displayValue: v,
+          operator: null,
+          waitForOperand: true
+        });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         'div',
         { className: 'calculator' },
@@ -9800,7 +9700,12 @@ var Calculate = function (_React$Component5) {
           _react2.default.createElement(
             'div',
             { className: 'auto-scaling-text' },
-            '0'
+            this.state.ruler
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'auto-scaling-text' },
+            this.state.displayValue
           )
         ),
         _react2.default.createElement(
@@ -9814,7 +9719,9 @@ var Calculate = function (_React$Component5) {
               { className: 'function-keys' },
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-clear' },
+                { onClick: function onClick() {
+                    return _this2.clearAll();
+                  }, className: 'calculator-key key-clear' },
                 'AC'
               ),
               _react2.default.createElement(
@@ -9833,57 +9740,79 @@ var Calculate = function (_React$Component5) {
               { className: 'digit-keys' },
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-0' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(0);
+                  }, className: 'calculator-key key-0' },
                 '0'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-dot' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit('.');
+                  }, className: 'calculator-key key-dot' },
                 '\u25CF'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-1' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(1);
+                  }, className: 'calculator-key key-1' },
                 '1'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-2' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(2);
+                  }, className: 'calculator-key key-2' },
                 '2'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-3' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(3);
+                  }, className: 'calculator-key key-3' },
                 '3'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-4' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(4);
+                  }, className: 'calculator-key key-4' },
                 '4'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-5' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(5);
+                  }, className: 'calculator-key key-5' },
                 '5'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-6' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(6);
+                  }, className: 'calculator-key key-6' },
                 '6'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-7' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(7);
+                  }, className: 'calculator-key key-7' },
                 '7'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-8' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(8);
+                  }, className: 'calculator-key key-8' },
                 '8'
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-9' },
+                { onClick: function onClick() {
+                    return _this2.inputDigit(9);
+                  }, className: 'calculator-key key-9' },
                 '9'
               )
             )
@@ -9893,27 +9822,37 @@ var Calculate = function (_React$Component5) {
             { className: 'operator-keys' },
             _react2.default.createElement(
               'button',
-              { className: 'calculator-key key-divide' },
+              { onClick: function onClick() {
+                  return _this2.countDivide();
+                }, className: 'calculator-key key-divide' },
               '\xF7'
             ),
             _react2.default.createElement(
               'button',
-              { className: 'calculator-key key-multiply' },
+              { onClick: function onClick() {
+                  return _this2.countMultiply();
+                }, className: 'calculator-key key-multiply' },
               '\xD7'
             ),
             _react2.default.createElement(
               'button',
-              { className: 'calculator-key key-subtract' },
+              { onClick: function onClick() {
+                  return _this2.countSubstract();
+                }, className: 'calculator-key key-subtract' },
               '\u2212'
             ),
             _react2.default.createElement(
               'button',
-              { className: 'calculator-key key-add' },
+              { onClick: function onClick() {
+                  return _this2.countAdd();
+                }, className: 'calculator-key key-add' },
               '+'
             ),
             _react2.default.createElement(
               'button',
-              { className: 'calculator-key key-equals' },
+              { onClick: function onClick() {
+                  return _this2.countEqual();
+                }, className: 'calculator-key key-equals' },
               '='
             )
           )
