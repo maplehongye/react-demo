@@ -67,6 +67,13 @@ class Calculate extends React.Component {
     }
   }
 
+  countPercent(){
+    let v = parseFloat(this.state.displayValue) / 100;
+    this.setState({
+      displayValue: v
+    });
+  }
+
   // 清零
   clearAll(){
     this.setState({
@@ -182,7 +189,7 @@ class Calculate extends React.Component {
             <div className="function-keys">
               <button onClick={() => this.clearAll()} className="calculator-key key-clear">AC</button>
               <button className="calculator-key key-sign">±</button>
-              <button className="calculator-key key-percent">%</button>
+              <button className="calculator-key key-percent" onClick={() => this.countPercent()}>%</button>
             </div>
             <div className="digit-keys">
               <button onClick={() => this.inputDigit(0)} className="calculator-key key-0">0</button>

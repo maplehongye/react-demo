@@ -9563,6 +9563,14 @@ var Calculate = function (_React$Component) {
         }
       }
     }
+  }, {
+    key: 'countPercent',
+    value: function countPercent() {
+      var v = parseFloat(this.state.displayValue) / 100;
+      this.setState({
+        displayValue: v
+      });
+    }
 
     // 清零
 
@@ -9719,7 +9727,9 @@ var Calculate = function (_React$Component) {
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'calculator-key key-percent' },
+                { className: 'calculator-key key-percent', onClick: function onClick() {
+                    return _this2.countPercent();
+                  } },
                 '%'
               )
             ),
