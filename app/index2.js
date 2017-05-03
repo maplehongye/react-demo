@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 const functionKeys = ['AC', '±', '%'];
 const digitKeys = ['0', '●', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 const operatorKeys = ['÷', 'x', '-', '+', '='];
-const priorityValue = {'+': 0, '-': 0, '*': 1, '/': 1};
 
 const functionItems = functionKeys.map((currKey) =>
   <button key={currKey} className="calculator-key">{currKey}</button>
@@ -25,10 +24,8 @@ class Calculate extends React.Component {
     this.state = {
       ruler: '',
       value: 0,
-      operator: null,
       displayValue: 0,
-      numberMap: [],
-      operatorMap: [],
+      operator: null,
       waitForOperand: false
     };
 
@@ -71,103 +68,119 @@ class Calculate extends React.Component {
   clearAll(){
     this.setState({
       value: 0,
-      operator: null,
       displayValue: 0,
-      numberMap: [],
-      operatorMap: [],
+      operator: null,
       waitForOperand: false,
     });
   }
 
-  // 四则混合运算
-  mathCount(num1,num2,op){
+  // 运算
+  runCount(){
     let result;
-    switch(op){
+    switch(this.state.operator){
       case '+':
-        result = num1 + num2;
+        result = this.state.value + parseFloat(this.state.displayValue)
         break;
       case '-':
-        result = num1 - num2;
+        result = this.state.value - parseFloat(this.state.displayValue)
         break;
       case '*':
-        result = num1 * num2;
+        result = this.state.value * parseFloat(this.state.displayValue)
         break;
       case '/':
-        result = num1 / num2;
+        result = this.state.value / parseFloat(this.state.displayValue)
         break;
-    };
-
+    }
     return result;
   }
 
-  count(currOperate){
-    let operatorMap = this.state.operatorMap,
-        numberMap = this.state.numberMap,
-        opLength = operatorMap.length,
-        nmLength = numberMap.length,
-        currNumber = parseFloat(this.state.displayValue);
-
-    if(opLength > 0){
-      let lastOperate = operatorMap[opLength - 1];
-
-      // 优先级高于之前的运算符
-      if(priorityValue[currOperate] - priorityValue[lastOperate] > 0){
-        operatorMap.push(currOperate);
-        numberMap.push(currNumber);
-      }else{
-        let result = this.mathCount(numberMap[nmLength - 1] , currNumber , lastOperate);
-        operatorMap[opLength - 1] = currOperate;
-        numberMap[nmLength - 1] = result;
-        this.setState({displayValue: result});
-      }
-
-    }else{
-      operatorMap.push(currOperate);
-      numberMap.push(currNumber);
-    }
-    this.setState({waitForOperand: true});
-  }
-
-  countAll(){
-    let operatorMap = this.state.operatorMap,
-        numberMap = this.state.numberMap,
-        opLength = operatorMap.length,
-        nmLength = numberMap.length,
-        result;
-
-    if(opLength == 0){
-      result = numberMap[0];
-      numberMap.pop();
-      return result;
-    }else{
-        let v = this.mathCount(numberMap[nmLength - 2] , numberMap[nmLength - 1] , operatorMap[opLength - 1]);
-        numberMap[nmLength - 2] = v;
-        operatorMap.pop();
-        numberMap.pop();
-        return this.countAll();
-    }
-  }
-  // 算结果
-  countEqual(){
-    let operatorMap = this.state.operatorMap,
-        numberMap = this.state.numberMap,
-        opLength = operatorMap.length,
-        nmLength = numberMap.length,
-        currNumber = parseFloat(this.state.displayValue);
-
-
-    if(opLength > 0 && nmLength > 0){
-      numberMap.push(currNumber);
-      let v = this.countAll();
-
+  countAdd(){
+    let v;
+    if(this.state.operator){
+      v = this.runCount();
       this.setState({
+        value: v,
         displayValue: v,
-        numberMap: [],
-        operatorMap: [],
+        operator: '+',
         waitForOperand: true
-      });     
+      });
+    }else{
+      this.setState({
+        value: parseFloat(this.state.displayValue),
+        operator: '+',
+        waitForOperand: true
+      });          
     }
+  }
 
+  countSubstract(){
+    let v;
+    if(this.state.operator){
+      v = this.runCount();
+      this.setState({
+        value: v,
+        displayValue: v,
+        operator: '-',
+        waitForOperand: true
+      });
+    }else{
+      this.setState({
+        value: parseFloat(this.state.displayValue),
+        operator: '-',
+        waitForOperand: true
+      });          
+    }
+  }
+
+  countMultiply(){
+    let v;
+    if(this.state.operator){
+      v = this.runCount();
+      this.setState({
+        value: v,
+        displayValue: v,
+        operator: '*',
+        waitForOperand: true
+      });
+    }else{
+      this.setState({
+        value: parseFloat(this.state.displayValue),
+        operator: '*',
+        waitForOperand: true
+      });          
+    }
+  }
+
+  countDivide(){
+    let v;
+    if(this.state.operator && !this.state.waitForOperand){
+      v = this.runCount();
+      this.setState({
+        value: v,
+        displayValue: v,
+        operator: '/',
+        waitForOperand: true
+      });
+    }else{
+      this.setState({
+        value: parseFloat(this.state.displayValue),
+        operator: '/',
+        waitForOperand: true
+      });          
+    }
+  }
+
+  countEqual(){
+    if(this.state.operator){
+      let v = this.runCount();
+      this.setState({
+        value: v,
+        displayValue: v,
+        operator: null,
+        waitForOperand: true
+      });
+
+    }
   }
 
   render() {
@@ -199,10 +212,10 @@ class Calculate extends React.Component {
             </div>
           </div>
           <div className="operator-keys">
-            <button onClick={() => this.count('/')} className="calculator-key key-divide">÷</button>
-            <button onClick={() => this.count('*')} className="calculator-key key-multiply">×</button>
-            <button onClick={() => this.count('-')} className="calculator-key key-subtract">−</button>
-            <button onClick={() => this.count('+')} className="calculator-key key-add">+</button>
+            <button onClick={() => this.countDivide()} className="calculator-key key-divide">÷</button>
+            <button onClick={() => this.countMultiply()} className="calculator-key key-multiply">×</button>
+            <button onClick={() => this.countSubstract()} className="calculator-key key-subtract">−</button>
+            <button onClick={() => this.countAdd()} className="calculator-key key-add">+</button>
             <button onClick={() => this.countEqual()} className="calculator-key key-equals">=</button>
           </div>
         </div>

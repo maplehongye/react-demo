@@ -9480,6 +9480,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var functionKeys = ['AC', '±', '%'];
 var digitKeys = ['0', '●', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 var operatorKeys = ['÷', 'x', '-', '+', '='];
+var priorityValue = { '+': 0, '-': 0, '*': 1, '/': 1 };
 
 var functionItems = functionKeys.map(function (currKey) {
   return _react2.default.createElement(
@@ -9516,8 +9517,10 @@ var Calculate = function (_React$Component) {
     _this.state = {
       ruler: '',
       value: 0,
-      displayValue: 0,
       operator: null,
+      displayValue: 0,
+      numberMap: [],
+      operatorMap: [],
       waitForOperand: false
     };
 
@@ -9531,6 +9534,7 @@ var Calculate = function (_React$Component) {
   _createClass(Calculate, [{
     key: 'inputDigit',
     value: function inputDigit(number) {
+      // waitForOperand为true时，表示开始输入一个新的操作数
       if (this.state.waitForOperand) {
         if (number == '.') {
           this.setState({
@@ -9544,11 +9548,13 @@ var Calculate = function (_React$Component) {
           });
         }
       } else {
+        // 替换默认的0
         if (this.state.displayValue === 0 && number != '.') {
           this.setState({
             displayValue: number
           });
         } else {
+          // 判断是不是重复输入小数点
           if (!(/\./.test(this.state.displayValue) && number == ".")) {
             this.setState({
               displayValue: this.state.displayValue + number.toString()
@@ -9565,123 +9571,105 @@ var Calculate = function (_React$Component) {
     value: function clearAll() {
       this.setState({
         value: 0,
-        displayValue: 0,
         operator: null,
+        displayValue: 0,
+        numberMap: [],
+        operatorMap: [],
         waitForOperand: false
       });
     }
 
-    // 运算
+    // 四则混合运算
 
   }, {
-    key: 'runCount',
-    value: function runCount() {
+    key: 'mathCount',
+    value: function mathCount(num1, num2, op) {
       var result = void 0;
-      switch (this.state.operator) {
+      switch (op) {
         case '+':
-          result = this.state.value + parseFloat(this.state.displayValue);
+          result = num1 + num2;
           break;
         case '-':
-          result = this.state.value - parseFloat(this.state.displayValue);
+          result = num1 - num2;
           break;
         case '*':
-          result = this.state.value * parseFloat(this.state.displayValue);
+          result = num1 * num2;
           break;
         case '/':
-          result = this.state.value / parseFloat(this.state.displayValue);
+          result = num1 / num2;
           break;
-      }
+      };
+
       return result;
     }
   }, {
-    key: 'countAdd',
-    value: function countAdd() {
-      var v = void 0;
-      if (this.state.operator) {
-        v = this.runCount();
-        this.setState({
-          value: v,
-          displayValue: v,
-          operator: '+',
-          waitForOperand: true
-        });
+    key: 'count',
+    value: function count(currOperate) {
+      var operatorMap = this.state.operatorMap,
+          numberMap = this.state.numberMap,
+          opLength = operatorMap.length,
+          nmLength = numberMap.length,
+          currNumber = parseFloat(this.state.displayValue);
+
+      if (opLength > 0) {
+        var lastOperate = operatorMap[opLength - 1];
+
+        // 优先级高于之前的运算符
+        if (priorityValue[currOperate] - priorityValue[lastOperate] > 0) {
+          operatorMap.push(currOperate);
+          numberMap.push(currNumber);
+        } else {
+          var result = this.mathCount(numberMap[nmLength - 1], currNumber, lastOperate);
+          operatorMap[opLength - 1] = currOperate;
+          numberMap[nmLength - 1] = result;
+          this.setState({ displayValue: result });
+        }
       } else {
-        this.setState({
-          value: parseFloat(this.state.displayValue),
-          operator: '+',
-          waitForOperand: true
-        });
+        operatorMap.push(currOperate);
+        numberMap.push(currNumber);
       }
+      this.setState({ waitForOperand: true });
     }
   }, {
-    key: 'countSubstract',
-    value: function countSubstract() {
-      var v = void 0;
-      if (this.state.operator) {
-        v = this.runCount();
-        this.setState({
-          value: v,
-          displayValue: v,
-          operator: '-',
-          waitForOperand: true
-        });
+    key: 'countAll',
+    value: function countAll() {
+      var operatorMap = this.state.operatorMap,
+          numberMap = this.state.numberMap,
+          opLength = operatorMap.length,
+          nmLength = numberMap.length,
+          result = void 0;
+
+      if (opLength == 0) {
+        result = numberMap[0];
+        numberMap.pop();
+        return result;
       } else {
-        this.setState({
-          value: parseFloat(this.state.displayValue),
-          operator: '-',
-          waitForOperand: true
-        });
+        var v = this.mathCount(numberMap[nmLength - 2], numberMap[nmLength - 1], operatorMap[opLength - 1]);
+        numberMap[nmLength - 2] = v;
+        operatorMap.pop();
+        numberMap.pop();
+        return this.countAll();
       }
     }
-  }, {
-    key: 'countMultiply',
-    value: function countMultiply() {
-      var v = void 0;
-      if (this.state.operator) {
-        v = this.runCount();
-        this.setState({
-          value: v,
-          displayValue: v,
-          operator: '*',
-          waitForOperand: true
-        });
-      } else {
-        this.setState({
-          value: parseFloat(this.state.displayValue),
-          operator: '*',
-          waitForOperand: true
-        });
-      }
-    }
-  }, {
-    key: 'countDivide',
-    value: function countDivide() {
-      var v = void 0;
-      if (this.state.operator && !this.state.waitForOperand) {
-        v = this.runCount();
-        this.setState({
-          value: v,
-          displayValue: v,
-          operator: '/',
-          waitForOperand: true
-        });
-      } else {
-        this.setState({
-          value: parseFloat(this.state.displayValue),
-          operator: '/',
-          waitForOperand: true
-        });
-      }
-    }
+    // 算结果
+
   }, {
     key: 'countEqual',
     value: function countEqual() {
-      if (this.state.operator) {
-        var v = this.runCount();
+      var operatorMap = this.state.operatorMap,
+          numberMap = this.state.numberMap,
+          opLength = operatorMap.length,
+          nmLength = numberMap.length,
+          currNumber = parseFloat(this.state.displayValue);
+
+      if (opLength > 0 && nmLength > 0) {
+        numberMap.push(currNumber);
+        var v = this.countAll();
+
         this.setState({
-          value: v,
           displayValue: v,
-          operator: null,
+          numberMap: [],
+          operatorMap: [],
           waitForOperand: true
         });
       }
@@ -9823,28 +9811,28 @@ var Calculate = function (_React$Component) {
             _react2.default.createElement(
               'button',
               { onClick: function onClick() {
-                  return _this2.countDivide();
+                  return _this2.count('/');
                 }, className: 'calculator-key key-divide' },
               '\xF7'
             ),
             _react2.default.createElement(
               'button',
               { onClick: function onClick() {
-                  return _this2.countMultiply();
+                  return _this2.count('*');
                 }, className: 'calculator-key key-multiply' },
               '\xD7'
             ),
             _react2.default.createElement(
               'button',
               { onClick: function onClick() {
-                  return _this2.countSubstract();
+                  return _this2.count('-');
                 }, className: 'calculator-key key-subtract' },
               '\u2212'
             ),
             _react2.default.createElement(
               'button',
               { onClick: function onClick() {
-                  return _this2.countAdd();
+                  return _this2.count('+');
                 }, className: 'calculator-key key-add' },
               '+'
             ),
