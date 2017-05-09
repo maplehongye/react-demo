@@ -9476,393 +9476,86 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// list
-var functionKeys = ['AC', '±', '%'];
-var digitKeys = ['0', '●', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-var operatorKeys = ['÷', 'x', '-', '+', '='];
-var priorityValue = { '+': 0, '-': 0, '*': 1, '/': 1 };
+var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'];
 
-var functionItems = functionKeys.map(function (currKey) {
+function ResultUl(props) {
+  var dataList = props.datalist;
+  var listItems = dataList.map(function (item) {
+    return _react2.default.createElement(
+      'li',
+      { key: item.toString() },
+      item
+    );
+  });
   return _react2.default.createElement(
-    'button',
-    { key: currKey, className: 'calculator-key' },
-    currKey
+    'ul',
+    { className: 'result-list' },
+    listItems
   );
-});
-var digitItems = digitKeys.map(function (currKey) {
-  return _react2.default.createElement(
-    'button',
-    { key: currKey, className: 'calculator-key' },
-    currKey
-  );
-});
-var operatorItems = operatorKeys.map(function (currKey) {
-  return _react2.default.createElement(
-    'button',
-    { key: currKey, className: 'calculator-key' },
-    currKey
-  );
-});
+}
 
-// 计算器
+var Suggester = function (_React$Component) {
+  _inherits(Suggester, _React$Component);
 
-var Calculate = function (_React$Component) {
-  _inherits(Calculate, _React$Component);
+  function Suggester(props) {
+    _classCallCheck(this, Suggester);
 
-  function Calculate(props) {
-    _classCallCheck(this, Calculate);
-
-    var _this = _possibleConstructorReturn(this, (Calculate.__proto__ || Object.getPrototypeOf(Calculate)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Suggester.__proto__ || Object.getPrototypeOf(Suggester)).call(this, props));
 
     _this.state = {
-      ruler: '',
-      value: 0,
-      operator: null,
-      displayValue: 0,
-      numberMap: [],
-      operatorMap: [],
-      waitForOperand: false
+      value: '',
+      filterdata: letters
     };
 
-    _this.inputDigit = _this.inputDigit.bind(_this);
+    _this.handleChange = _this.handleChange.bind(_this);
     return _this;
   }
 
-  // 输入数字
-
-
-  _createClass(Calculate, [{
-    key: 'inputDigit',
-    value: function inputDigit(number) {
-      // waitForOperand为true时，表示开始输入一个新的操作数
-      if (this.state.waitForOperand) {
-        if (number == '.') {
-          this.setState({
-            displayValue: '0.',
-            waitForOperand: false
-          });
-        } else {
-          this.setState({
-            displayValue: number,
-            waitForOperand: false
-          });
-        }
-      } else {
-        // 替换默认的0
-        if (this.state.displayValue === 0 && number != '.') {
-          this.setState({
-            displayValue: number
-          });
-        } else {
-          // 判断是不是重复输入小数点
-          if (!(/\./.test(this.state.displayValue) && number == ".")) {
-            this.setState({
-              displayValue: this.state.displayValue + number.toString()
-            });
-          }
-        }
-      }
+  _createClass(Suggester, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      // document.getElementById('inputValue1').innerHTML = this.state.value;
+      // document.getElementById('inputValue2').innerHTML = this.state.value;
+      // document.getElementById('inputValue3').innerHTML = this.state.value;
     }
   }, {
-    key: 'countPercent',
-    value: function countPercent() {
-      var v = parseFloat(this.state.displayValue) / 100;
-      this.setState({
-        displayValue: v
+    key: 'handleChange',
+    value: function handleChange(event) {
+      var inputWords = event.target.value.toLowerCase();
+      var filterArray = letters.filter(function (element) {
+        return element.indexOf(inputWords) >= 0;
       });
-    }
 
-    // 清零
-
-  }, {
-    key: 'clearAll',
-    value: function clearAll() {
       this.setState({
-        value: 0,
-        operator: null,
-        displayValue: 0,
-        numberMap: [],
-        operatorMap: [],
-        waitForOperand: false
+        value: inputWords,
+        filterdata: filterArray
       });
-    }
-
-    // 四则混合运算
-
-  }, {
-    key: 'mathCount',
-    value: function mathCount(num1, num2, op) {
-      var result = void 0;
-      switch (op) {
-        case '+':
-          result = num1 + num2;
-          break;
-        case '-':
-          result = num1 - num2;
-          break;
-        case '*':
-          result = num1 * num2;
-          break;
-        case '/':
-          result = num1 / num2;
-          break;
-      };
-
-      return result;
+      console.log(inputWords);
+      console.log(filterArray);
+      // document.getElementById('inputValue1').innerHTML = this.state.value;
+      // document.getElementById('inputValue2').innerHTML = event.target.value.toUpperCase();
     }
   }, {
-    key: 'count',
-    value: function count(currOperate) {
-      var operatorMap = this.state.operatorMap,
-          numberMap = this.state.numberMap,
-          opLength = operatorMap.length,
-          nmLength = numberMap.length,
-          currNumber = parseFloat(this.state.displayValue);
-
-      if (opLength > 0) {
-        var lastOperate = operatorMap[opLength - 1];
-
-        // 优先级高于之前的运算符
-        if (priorityValue[currOperate] - priorityValue[lastOperate] > 0) {
-          operatorMap.push(currOperate);
-          numberMap.push(currNumber);
-        } else {
-          var result = this.mathCount(numberMap[nmLength - 1], currNumber, lastOperate);
-          operatorMap[opLength - 1] = currOperate;
-          numberMap[nmLength - 1] = result;
-          this.setState({ displayValue: result });
-        }
-      } else {
-        operatorMap.push(currOperate);
-        numberMap.push(currNumber);
-      }
-      this.setState({ waitForOperand: true });
-    }
-  }, {
-    key: 'countAll',
-    value: function countAll() {
-      var operatorMap = this.state.operatorMap,
-          numberMap = this.state.numberMap,
-          opLength = operatorMap.length,
-          nmLength = numberMap.length,
-          result = void 0;
-
-      if (opLength == 0) {
-        result = numberMap[0];
-        numberMap.pop();
-        return result;
-      } else {
-        var v = this.mathCount(numberMap[nmLength - 2], numberMap[nmLength - 1], operatorMap[opLength - 1]);
-        numberMap[nmLength - 2] = v;
-        operatorMap.pop();
-        numberMap.pop();
-        return this.countAll();
-      }
-    }
-    // 算结果
-
-  }, {
-    key: 'countEqual',
-    value: function countEqual() {
-      var operatorMap = this.state.operatorMap,
-          numberMap = this.state.numberMap,
-          opLength = operatorMap.length,
-          nmLength = numberMap.length,
-          currNumber = parseFloat(this.state.displayValue);
-
-      if (opLength > 0 && nmLength > 0) {
-        numberMap.push(currNumber);
-        var v = this.countAll();
-
-        this.setState({
-          displayValue: v,
-          numberMap: [],
-          operatorMap: [],
-          waitForOperand: true
-        });
-      }
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      // document.getElementById('inputValue3').innerHTML = this.state.value;
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       return _react2.default.createElement(
         'div',
-        { className: 'calculator' },
-        _react2.default.createElement(
-          'div',
-          { className: 'calculator-display' },
-          _react2.default.createElement(
-            'div',
-            { className: 'auto-scaling-text' },
-            this.state.ruler
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'auto-scaling-text' },
-            this.state.displayValue
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'calculator-keypad' },
-          _react2.default.createElement(
-            'div',
-            { className: 'input-keys' },
-            _react2.default.createElement(
-              'div',
-              { className: 'function-keys' },
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.clearAll();
-                  }, className: 'calculator-key key-clear' },
-                'AC'
-              ),
-              _react2.default.createElement(
-                'button',
-                { className: 'calculator-key key-sign' },
-                '\xB1'
-              ),
-              _react2.default.createElement(
-                'button',
-                { className: 'calculator-key key-percent', onClick: function onClick() {
-                    return _this2.countPercent();
-                  } },
-                '%'
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'digit-keys' },
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(0);
-                  }, className: 'calculator-key key-0' },
-                '0'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit('.');
-                  }, className: 'calculator-key key-dot' },
-                '\u25CF'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(1);
-                  }, className: 'calculator-key key-1' },
-                '1'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(2);
-                  }, className: 'calculator-key key-2' },
-                '2'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(3);
-                  }, className: 'calculator-key key-3' },
-                '3'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(4);
-                  }, className: 'calculator-key key-4' },
-                '4'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(5);
-                  }, className: 'calculator-key key-5' },
-                '5'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(6);
-                  }, className: 'calculator-key key-6' },
-                '6'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(7);
-                  }, className: 'calculator-key key-7' },
-                '7'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(8);
-                  }, className: 'calculator-key key-8' },
-                '8'
-              ),
-              _react2.default.createElement(
-                'button',
-                { onClick: function onClick() {
-                    return _this2.inputDigit(9);
-                  }, className: 'calculator-key key-9' },
-                '9'
-              )
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'operator-keys' },
-            _react2.default.createElement(
-              'button',
-              { onClick: function onClick() {
-                  return _this2.count('/');
-                }, className: 'calculator-key key-divide' },
-              '\xF7'
-            ),
-            _react2.default.createElement(
-              'button',
-              { onClick: function onClick() {
-                  return _this2.count('*');
-                }, className: 'calculator-key key-multiply' },
-              '\xD7'
-            ),
-            _react2.default.createElement(
-              'button',
-              { onClick: function onClick() {
-                  return _this2.count('-');
-                }, className: 'calculator-key key-subtract' },
-              '\u2212'
-            ),
-            _react2.default.createElement(
-              'button',
-              { onClick: function onClick() {
-                  return _this2.count('+');
-                }, className: 'calculator-key key-add' },
-              '+'
-            ),
-            _react2.default.createElement(
-              'button',
-              { onClick: function onClick() {
-                  return _this2.countEqual();
-                }, className: 'calculator-key key-equals' },
-              '='
-            )
-          )
-        )
+        null,
+        _react2.default.createElement('input', { type: 'text', id: 'searchInput', value: this.state.value, onChange: this.handleChange }),
+        _react2.default.createElement(ResultUl, { datalist: this.state.filterdata })
       );
     }
   }]);
 
-  return Calculate;
+  return Suggester;
 }(_react2.default.Component);
 
-_reactDom2.default.render(_react2.default.createElement(Calculate, null), document.getElementById('root'));
+_reactDom2.default.render(_react2.default.createElement(Suggester, null), document.getElementById('root'));
 
 /***/ }),
 /* 82 */
