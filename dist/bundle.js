@@ -9476,83 +9476,360 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'];
+// dropdown demo
+var names = ['Noah', 'Liam', 'Mason', 'Jacob', 'William', 'Ethan', 'James', 'Alexander', 'Michael', 'Benjamin', 'Elijah', 'Daniel', 'Aiden', 'Logan', 'Matthew', 'Lucas', 'Jackson', 'David', 'Oliver', 'Jayden', 'Joseph', 'Gabriel', 'Samuel', 'Carter', 'Anthony', 'John', 'Dylan', 'Luke', 'Henry', 'Andrew', 'Isaac', 'Christopher', 'Joshua', 'Wyatt', 'Sebastian', 'Owen', 'Caleb', 'Nathan', 'Ryan', 'Jack', 'Hunter', 'Levi', 'Christian', 'Jaxon', 'Julian', 'Landon', 'Grayson', 'Jonathan', 'Isaiah', 'Charles', 'Thomas', 'Aaron', 'Eli', 'Connor', 'Jeremiah', 'Cameron', 'Josiah', 'Adrian', 'Colton', 'Jordan', 'Brayden', 'Nicholas', 'Robert', 'Angel', 'Hudson', 'Lincoln', 'Evan', 'Dominic', 'Austin', 'Gavin', 'Nolan', 'Parker', 'Adam', 'Chase', 'Jace', 'Ian', 'Cooper', 'Easton', 'Kevin', 'Jose', 'Tyler', 'Brandon', 'Asher', 'Jaxson', 'Mateo', 'Jason', 'Ayden', 'Zachary', 'Carson', 'Xavier', 'Leo', 'Ezra', 'Bentley', 'Sawyer', 'Kayden', 'Blake', 'Ryder', 'Theodore', 'Elias', 'Tristan', 'Roman', 'Leonardo', 'Camden', 'Brody', 'Luis', 'Miles', 'Micah', 'Vincent', 'Justin', 'Greyson', 'Declan', 'Maxwell', 'Juan', 'Cole', 'Damian', 'Carlos', 'Max', 'Harrison', 'Weston', 'Brantley', 'Braxton', 'Axel', 'Diego', 'Abel', 'Wesley', 'Santiago', 'Jesus', 'Silas', 'Giovanni', 'Bryce', 'Jayce', 'Bryson', 'Alex', 'Everett', 'George', 'Eric', 'Ivan', 'Emmett', 'Kaiden', 'Ashton', 'Kingston', 'Jonah', 'Jameson', 'Kai', 'Maddox', 'Timothy', 'Ezekiel', 'Ryker', 'Emmanuel', 'Hayden', 'Antonio', 'Bennett', 'Steven', 'Richard', 'Jude', 'Luca', 'Edward', 'Joel', 'Victor', 'Miguel', 'Malachi', 'King', 'Patrick', 'Kaleb', 'Bryan', 'Alan', 'Marcus', 'Preston', 'Abraham', 'Calvin', 'Colin', 'Bradley', 'Jeremy', 'Kyle', 'Graham', 'Grant', 'Jesse', 'Kaden', 'Alejandro', 'Oscar', 'Jase', 'Karter', 'Maverick', 'Aidan', 'Tucker', 'Avery', 'Dexter', 'Braylen', 'Armando', 'Braden', 'Corey', 'Kolton', 'Gerardo', 'Ace', 'Ellis'];
 
-function ResultUl(props) {
-  var dataList = props.datalist;
-  var listItems = dataList.map(function (item) {
-    return _react2.default.createElement(
-      'li',
-      { key: item.toString() },
-      item
-    );
+// function ResultUl(props) {
+//   let dataList = props.datalist;
+//   let listItems = dataList.map((item) =>
+//     <li key={item.toString()}>
+//       {item}
+//     </li>
+//   );
+//   return (
+//     <ul className="result-list">{listItems}</ul>
+//   );
+// }
+// class Suggester extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       value: '',
+//       filterdata: names
+//     };
+
+//     this.handleChange = this.handleChange.bind(this);
+//   }
+
+//   handleChange(event) {
+//     let inputWords = event.target.value.toLowerCase();
+//     let filterArray = names.filter(function(element){
+//         return element.indexOf(inputWords) >= 0;
+//     });
+
+//     this.setState({
+//       value: inputWords,
+//       filterdata: filterArray
+//     });
+
+//   }
+
+//   render() {
+//     return (
+//       <div id="Suggester">
+//       <input type="text" id="searchInput" value={this.state.value} onChange={this.handleChange} />
+//       <ResultUl datalist={this.state.filterdata}/>
+//       </div>
+//     );
+//   }
+// }
+
+// function ResultUl(props) {
+//   let dataList = props.datalist;
+//   let listItems = dataList.map((item) =>
+//     <li key={item.toString()}>
+//       {item}
+//     </li>
+//   );
+//   return (
+//     <ul className="result-list">{listItems}</ul>
+//   );
+// }
+function getFilterData(searchKeys) {
+  var filterArray = names.filter(function (element) {
+    return element.indexOf(searchKeys) >= 0;
   });
-  return _react2.default.createElement(
-    'ul',
-    { className: 'result-list' },
-    listItems
-  );
+
+  // 当查询结果多余一条时给ul填充数据
+  return filterArray.length > 1 ? filterArray : [];
 }
 
-var Suggester = function (_React$Component) {
-  _inherits(Suggester, _React$Component);
+var ResultUl = function (_React$Component) {
+  _inherits(ResultUl, _React$Component);
+
+  function ResultUl(props) {
+    _classCallCheck(this, ResultUl);
+
+    var _this = _possibleConstructorReturn(this, (ResultUl.__proto__ || Object.getPrototypeOf(ResultUl)).call(this, props));
+
+    _this.handleClick = _this.handleClick.bind(_this);
+    return _this;
+  }
+
+  _createClass(ResultUl, [{
+    key: 'handleClick',
+    value: function handleClick(event) {
+      this.props.onSelectChanged(event.currentTarget.innerHTML);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'ul',
+        { className: 'result-list' },
+        this.props.datalist.map(function (d) {
+          return _react2.default.createElement(
+            'li',
+            { key: d.toString(), onClick: _this2.handleClick },
+            d
+          );
+        })
+      );
+    }
+  }]);
+
+  return ResultUl;
+}(_react2.default.Component);
+
+var Suggester = function (_React$Component2) {
+  _inherits(Suggester, _React$Component2);
 
   function Suggester(props) {
     _classCallCheck(this, Suggester);
 
-    var _this = _possibleConstructorReturn(this, (Suggester.__proto__ || Object.getPrototypeOf(Suggester)).call(this, props));
+    var _this3 = _possibleConstructorReturn(this, (Suggester.__proto__ || Object.getPrototypeOf(Suggester)).call(this, props));
 
-    _this.state = {
+    _this3.state = {
       value: '',
-      filterdata: letters
+      filterdata: names
     };
 
-    _this.handleChange = _this.handleChange.bind(_this);
-    return _this;
+    _this3.handleChange = _this3.handleChange.bind(_this3);
+    _this3.handleSelectChange = _this3.handleSelectChange.bind(_this3);
+    return _this3;
   }
 
   _createClass(Suggester, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      // document.getElementById('inputValue1').innerHTML = this.state.value;
-      // document.getElementById('inputValue2').innerHTML = this.state.value;
-      // document.getElementById('inputValue3').innerHTML = this.state.value;
-    }
-  }, {
     key: 'handleChange',
     value: function handleChange(event) {
       var inputWords = event.target.value.toLowerCase();
-      var filterArray = letters.filter(function (element) {
-        return element.indexOf(inputWords) >= 0;
-      });
+      var filterArray = getFilterData(inputWords);
 
       this.setState({
         value: inputWords,
         filterdata: filterArray
       });
-      console.log(inputWords);
-      console.log(filterArray);
-      // document.getElementById('inputValue1').innerHTML = this.state.value;
-      // document.getElementById('inputValue2').innerHTML = event.target.value.toUpperCase();
     }
   }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate() {
-      // document.getElementById('inputValue3').innerHTML = this.state.value;
+    key: 'handleSelectChange',
+    value: function handleSelectChange(selectedValue) {
+      var inputWords = selectedValue.toLowerCase();
+      var filterArray = getFilterData(inputWords);
+
+      this.setState({
+        value: inputWords,
+        filterdata: filterArray
+      });
     }
   }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { id: 'Suggester' },
         _react2.default.createElement('input', { type: 'text', id: 'searchInput', value: this.state.value, onChange: this.handleChange }),
-        _react2.default.createElement(ResultUl, { datalist: this.state.filterdata })
+        _react2.default.createElement(ResultUl, { datalist: this.state.filterdata, onSelectChanged: this.handleSelectChange })
       );
     }
   }]);
 
   return Suggester;
+}(_react2.default.Component);
+
+// 以下是温度计demo
+
+
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return _react2.default.createElement(
+      'p',
+      null,
+      'The water would boil.'
+    );
+  }
+  return _react2.default.createElement(
+    'p',
+    null,
+    'The water would not boil.'
+  );
+}
+
+// class Calculator extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleChange = this.handleChange.bind(this);
+//     this.state = {temperature: ''};
+//   }
+
+//   handleChange(e) {
+//     this.setState({temperature: e.target.value});
+//   }
+
+//   render() {
+//     const temperature = this.state.temperature;
+//     return (
+//       <fieldset>
+//         <legend>Enter temperature in Celsius:</legend>
+//         <input
+//           value={temperature}
+//           onChange={this.handleChange} />
+//         <BoilingVerdict
+//           celsius={parseFloat(temperature)} />
+//       </fieldset>
+//     );
+//   }
+// }
+
+var scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+};
+
+// class TemperatureInput extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleChange = this.handleChange.bind(this);
+//     this.state = {temperature: ''};
+//   }
+
+//   handleChange(e) {
+//     this.setState({temperature: e.target.value});
+//   }
+
+//   render() {
+//     const temperature = this.state.temperature;
+//     const scale = this.props.scale;
+//     return (
+//       <fieldset>
+//         <legend>Enter temperature in {scaleNames[scale]}:</legend>
+//         <input value={temperature}
+//                onChange={this.handleChange} />
+//       </fieldset>
+//     );
+//   }
+// }
+
+// class Calculator extends React.Component {
+//   render() {
+//     return (
+//       <div>
+//         <TemperatureInput scale="c" />
+//         <TemperatureInput scale="f" />
+//       </div>
+//     );
+//   }
+// }
+
+
+function toCelsius(fahrenheit) {
+  return (fahrenheit - 32) * 5 / 9;
+}
+function toFahrenheit(celsius) {
+  return celsius * 9 / 5 + 32;
+}
+function tryConvert(temperature, convert) {
+  var input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return '';
+  }
+  var output = convert(input);
+  var rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
+
+var TemperatureInput = function (_React$Component3) {
+  _inherits(TemperatureInput, _React$Component3);
+
+  function TemperatureInput(props) {
+    _classCallCheck(this, TemperatureInput);
+
+    var _this4 = _possibleConstructorReturn(this, (TemperatureInput.__proto__ || Object.getPrototypeOf(TemperatureInput)).call(this, props));
+
+    _this4.handleChange = _this4.handleChange.bind(_this4);
+    return _this4;
+  }
+
+  _createClass(TemperatureInput, [{
+    key: 'handleChange',
+    value: function handleChange(e) {
+      this.props.onTemperatureChange(e.target.value);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var temperature = this.props.temperature;
+      var scale = this.props.scale;
+      return _react2.default.createElement(
+        'fieldset',
+        null,
+        _react2.default.createElement(
+          'legend',
+          null,
+          'Enter temperature in ',
+          scaleNames[scale],
+          ':'
+        ),
+        _react2.default.createElement('input', { value: temperature,
+          onChange: this.handleChange })
+      );
+    }
+  }]);
+
+  return TemperatureInput;
+}(_react2.default.Component);
+
+var Calculator = function (_React$Component4) {
+  _inherits(Calculator, _React$Component4);
+
+  function Calculator(props) {
+    _classCallCheck(this, Calculator);
+
+    var _this5 = _possibleConstructorReturn(this, (Calculator.__proto__ || Object.getPrototypeOf(Calculator)).call(this, props));
+
+    _this5.handleCelsiusChange = _this5.handleCelsiusChange.bind(_this5);
+    _this5.handleFahrenheitChange = _this5.handleFahrenheitChange.bind(_this5);
+    _this5.state = { temperature: '', scale: 'c' };
+    return _this5;
+  }
+
+  _createClass(Calculator, [{
+    key: 'handleCelsiusChange',
+    value: function handleCelsiusChange(temperature) {
+      this.setState({ scale: 'c', temperature: temperature });
+    }
+  }, {
+    key: 'handleFahrenheitChange',
+    value: function handleFahrenheitChange(temperature) {
+      this.setState({ scale: 'f', temperature: temperature });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var scale = this.state.scale;
+      var temperature = this.state.temperature;
+      var celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+      var fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(TemperatureInput, {
+          scale: 'c',
+          temperature: celsius,
+          onTemperatureChange: this.handleCelsiusChange }),
+        _react2.default.createElement(TemperatureInput, {
+          scale: 'f',
+          temperature: fahrenheit,
+          onTemperatureChange: this.handleFahrenheitChange }),
+        _react2.default.createElement(BoilingVerdict, {
+          celsius: parseFloat(celsius) })
+      );
+    }
+  }]);
+
+  return Calculator;
 }(_react2.default.Component);
 
 _reactDom2.default.render(_react2.default.createElement(Suggester, null), document.getElementById('root'));
